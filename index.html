@@ -83,6 +83,7 @@
             <option value="players 8">players 8</option>
           </select>
           <input type="text" id="mftext" name="mftext" size="5" value="0" style="text-align: center;"> Magic Find
+          <input type="checkbox" id="linearMF" name="linearMF" value="0"> Linear MF
           <input type="text" id="seedtext" name="seedtext" size="2" value="" style="text-align: center; margin: 0 0 0 10em ; visibility: hidden;"> 
           <!-- RNG Seed.  hidden since JS doesnt have a random.seed set function like py -->
         </div>
@@ -165,6 +166,7 @@ function runx(e) {
   var monstr = document.getElementById("selectMon").value + DIFFICULTIES[document.getElementById("selectDiff").value];
   var players_str = (document.getElementById("selectPlayers").value).split(' ')[1];
   var mf_str = document.getElementById("mftext").value;
+  var linearMF = !!document.getElementById("linearMF").value;
   var seed_str = document.getElementById("seedtext").value;
 
   var tot_loot = {};  // alternative is to use a list. then take list.count(item).  both cases are ~k*o(n) complexity. the number of items is limited since only unis, sets, runes are kept
@@ -184,7 +186,7 @@ function runx(e) {
       }
       var loot_items = final_rolls_from_tc(monstr, players_str, seed_str);  // Hell difficulty hard-coded
       for (var j = 0; j < loot_items.length; j++) {
-        loot_items[j] = name_from_armo_weap_misc(loot_items[j]['rolleditemtc'], mf_str, loot_items[j]['rootclass']);  // expanded item names
+        loot_items[j] = name_from_armo_weap_misc(loot_items[j]['rolleditemtc'], mf_str, linearMF, loot_items[j]['rootclass']);  // expanded item names
       }
       if (loot_items.length > 0) { 
         for (var loot_item of loot_items) {
