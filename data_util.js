@@ -283,7 +283,7 @@ function get_mlvl(mon_str) {
     return mlvl;
 };
 
-function name_from_armo_weap_misc(item_str, mf_str, mon_str) {
+function name_from_armo_weap_misc(item_str, mf_str, linearMF, mon_str) {
     // return an item name given armoX, weapX, or a misc. item string. mon_str ~ 'Andarielq (H)'
 
     var type_str = item_str.substr(0,4);
@@ -292,7 +292,7 @@ function name_from_armo_weap_misc(item_str, mf_str, mon_str) {
         var [out_name, level, itemtype] = roll_from_armo_weap_lvl(item_str);
         // check for quality. unique, set, rare, magic.   out_name 'uni~ Balanced Knife'
         var success;
-        [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str, 'uni');
+        [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str, linearMF, 'uni');
         
         if (!success) { 
             // print(out_name, 'uni check failed. checking set')
@@ -334,7 +334,7 @@ function is_class_specific(type_str) {
     return Boolean(class_str);
 };
 
-function check_uni_or_set(name_str, level_str, is_class_spec, mlvl_int, mon_str, mf_str='0', qual_type='uni') {
+function check_uni_or_set(name_str, level_str, is_class_spec, mlvl_int, mon_str, mf_str='0', linearMF=false, qual_type='uni') {
     // inputs ~ ('Balanced Knife', '13', false -- for 'tkni')
     // normal vs elite check isn't needed for Andy. uni,set,rare,magic have same values (rows 4 and 5 in itemratio.txt)
     
@@ -389,7 +389,7 @@ function check_uni_or_set(name_str, level_str, is_class_spec, mlvl_int, mon_str,
     }catch(e) {
         var mf = 0;
     }
-    if (qual_type !== 'mag') {
+    if (qual_type !== 'mag' && !linearMF) {
         var effect_mf = mf*factor/(mf+factor);
     }else {
         var effect_mf = mf;
