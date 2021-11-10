@@ -296,13 +296,13 @@ function name_from_armo_weap_misc(item_str, mf_str, linearMF, mon_str) {
         
         if (!success) { 
             // print(out_name, 'uni check failed. checking set')
-            [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str, 'set');
+            [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str,  linearMF, 'set');
             // return rare quality
             if (!success) { 
-                [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str, 'rar');
+                [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str,  linearMF, 'rar');
                 // check_rare roll, add magic~ or nonmagic~   (quest bosses and monsters logic will be same, referencing TC uni/set/rare col)
                 if (!success) { 
-                    [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str, 'mag');
+                    [out_name, success] = check_uni_or_set(out_name, level, is_class_specific(itemtype), mlvl, mon_str, mf_str,  linearMF, 'mag');
                     if (!success) {
                         out_name = 'normal~ ' + out_name;
                     }; }; }; };
@@ -312,14 +312,14 @@ function name_from_armo_weap_misc(item_str, mf_str, linearMF, mon_str) {
         var [out_name, level] = name_from_misc(item_str);
         // misc.txt has lvl>0 for ring, amu, charm, rune.  do not check uniques of gems, runes, ...
         if (level && (parseInt(level) > 0) && !out_name.toLowerCase().includes("rune")) { 
-            [out_name, success] = check_uni_or_set(out_name, level, false, mlvl, mon_str, mf_str, 'uni');
+            [out_name, success] = check_uni_or_set(out_name, level, false, mlvl, mon_str, mf_str,  linearMF, 'uni');
             if (!success) { 
-                [out_name, success] = check_uni_or_set(out_name, level, false, mlvl, mon_str, mf_str, 'set');
+                [out_name, success] = check_uni_or_set(out_name, level, false, mlvl, mon_str, mf_str,  linearMF, 'set');
                 // return rare quality
                 var name_lower = out_name.toLowerCase();
                 if (!success && (name_lower.includes("jewel") || name_lower.includes("ring") || name_lower.includes("amulet") || name_lower.includes("charm"))) {
                     // check roll for rare, magic
-                    [out_name, success] = check_uni_or_set(out_name, level, false, mlvl, mon_str, mf_str, 'rar');
+                    [out_name, success] = check_uni_or_set(out_name, level, false, mlvl, mon_str, mf_str,  linearMF, 'rar');
                     if (!success) { 
                         out_name = 'magic~ ' + out_name;      // jewel, ring, ammy, charm must be magic if rare roll fails
                     }; }; }; };
